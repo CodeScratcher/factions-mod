@@ -7,8 +7,16 @@ local function has_value (tab, val)
 
     return false
 end
+local function print_all_of (tab)
+    for index, value in ipairs(tab) do
+        print(value)
+    end
 
-local storage = minetest.get_mod_storage()
+
+end
+
+
+storage = minetest.get_mod_storage()	
 minetest.register_chatcommand("add_faction",{
 	params = "<faction name>",
 	privs = {
@@ -21,12 +29,13 @@ minetest.register_chatcommand("add_faction",{
 		
 		if minetest.deserialize(storage:get_string("factions")) then
 		    
-		    local facs = minetest.deserialize(storage:get_string("factions")) 
-		    facs[#facs+1] = param
+		    local facs = minetest.deserialize(storage:get_string("factions"))
+		    facs[#facs+1] = params
+		    print_all_of(facs)
 		    print(minetest.serialize(facs))
 		    storage:set_string("factions", minetest.serialize(facs))
                 else
-                    storage:set_string("factions", minetest.serialize({param}))
+                    storage:set_string("factions", minetest.serialize({params}))
 		end
 	
 	end
