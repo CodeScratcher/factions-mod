@@ -32,6 +32,14 @@ minetest.register_chatcommand("add_faction", {
               print(minetest.serialize(facs))
 
               storage:set_string("factions", minetest.serialize(facs))
+
+              local x = minetest.deserialize(storage:get_string("fac_props"))
+              x[params] = {
+                  r = 255,
+                  b = 255,
+                  g = 255
+              }
+              storage:set_string("fac_props", minetest.serialize(x))
         else
             storage:set_string("factions", minetest.serialize({params}))
           end
@@ -108,7 +116,7 @@ minetest.register_chatcommand("set_faction_color", {
        end
 
        -- TODO: Colors
-       
+
        local nick = user:get_attribute("faction")
 
        if nick then
