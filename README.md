@@ -1,2 +1,2 @@
 # Factions Mod for Minetest
-TODO
+A mod that allows players to team together
