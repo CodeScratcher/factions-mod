@@ -264,6 +264,5 @@ minetest.register_node("factions:chest", {
     "factions_chest_front.png",
   },
   drop = "factions:chest",
-  groups = {choppy = 1, oddly_breakable_by_hand = 1},
-  --sounds = (what here?),
+  groups = {choppy = 1},
 })
