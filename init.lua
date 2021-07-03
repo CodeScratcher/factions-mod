@@ -89,6 +89,34 @@ minetest.register_chatcommand("join_faction", {
     end
 })
 
+minetest.register_chatcommand("set_faction_color", {
+   params = "<red> <green> <blue>",
+   privs = {
+     interact = true,
+     set_faction = true
+   },
+   description = "Set the color of a faction",
+   func = function(username, param)
+       local user = minetest.get_player_by_name(username)
+       local params = string.split(param, " ")
+       local red = params[1]
+       local green = params[2]
+       local blue = params[3]
+
+       if red == nil or green == nil or blue == nil then
+           return false, "<red> <green> <blue>"
+       end
+
+       -- TODO: Colors
+       
+       local nick = user:get_attribute("faction")
+
+       if nick then
+           user:set_nametag_attributes({text = "(" .. nick .. ")" .. " " .. player:get_player_name() })
+       end
+   end
+})
+
 minetest.register_chatcommand("set_faction", {
    params = "<player>, <faction name>",
    privs = {
