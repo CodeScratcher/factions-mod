@@ -34,6 +34,9 @@ minetest.register_chatcommand("add_faction", {
               storage:set_string("factions", minetest.serialize(facs))
 
               local x = minetest.deserialize(storage:get_string("faction_color"))
+              if not x then
+                  x = {}
+              end
               x[params] = {
                   r = 255,
                   b = 255,
@@ -91,6 +94,7 @@ minetest.register_chatcommand("join_faction", {
 
         local nick = user:get_attribute("faction")
         if not x then
+            x = {}
             x[user:get_attribute("faction")] = {
                 r = 255,
                 b = 255,
@@ -178,6 +182,7 @@ minetest.register_chatcommand("set_faction", {
        local nick = player:get_attribute("faction")
        local x = minetest.deserialize(storage:get_string("faction_color"))
        if not x then
+           x = {}
            x[player:get_attribute("faction")] = {
                r = 255,
                b = 255,
@@ -233,6 +238,7 @@ minetest.register_on_joinplayer(function(player)
     local nick = player:get_attribute("faction")
     local x = minetest.deserialize(storage:get_string("faction_color"))
     if not x then
+        x = {}
         x[player:get_attribute("faction")] = {
             r = 255,
             b = 255,
