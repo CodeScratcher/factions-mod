@@ -125,9 +125,12 @@ minetest.register_chatcommand("set_faction_color", {
        -- TODO: Colors
 
        local nick = user:get_attribute("faction")
-
+       local faction_color = x[user:get_attribute("faction")] 
        if nick then
-           user:set_nametag_attributes({text = "(" .. nick .. ")" .. " " .. player:get_player_name() })
+           user:set_nametag_attributes({
+               text = "(" .. nick .. ")" .. " " .. player:get_player_name(),
+               color = faction_color
+           })
        end
    end
 })
