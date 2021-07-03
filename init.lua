@@ -171,3 +171,18 @@ minetest.register_on_joinplayer(function(player)
         player:set_nametag_attributes({text = "(" .. nick .. ")" .. " " .. player:get_player_name()})
     end
 end)
+
+minetest.register_node("factions:chest", {
+  description = "Factions Chest",
+  tiles = {
+    "factions_chest_top.png",
+    "factions_chest_bottom.png",
+    "factions_chest_right.png",
+    "factions_chest_left.png",
+    "factions_chest_back.png",
+    "factions_chest_front.png",
+  },
+  drop = "factions:chest",
+  groups = {choppy = 1, oddly_breakable_by_hand = 1},
+  --sounds = (what here?),
+})
