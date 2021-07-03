@@ -84,8 +84,10 @@ minetest.register_chatcommand("join_faction", {
     },
     description = "Join a faction you are allowed into",
     func = function(username, param)
-          local user = minetest.get_player_by_name(username)
-
+         local user = minetest.get_player_by_name(username)
+        if not minetest.deserialize(user:get_attribute("factions")) then
+            user:set_attribute("factions", {"neutral"})
+        end
         if has_value(minetest.deserialize(user:get_attribute("factions")), param) then
               user:set_attribute("faction", param)
         else
