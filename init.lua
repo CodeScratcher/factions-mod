@@ -33,13 +33,13 @@ minetest.register_chatcommand("add_faction", {
 
               storage:set_string("factions", minetest.serialize(facs))
 
-              local x = minetest.deserialize(storage:get_string("fac_props"))
+              local x = minetest.deserialize(storage:get_string("faction_color"))
               x[params] = {
                   r = 255,
                   b = 255,
                   g = 255
               }
-              storage:set_string("fac_props", minetest.serialize(x))
+              storage:set_string("faction_color", minetest.serialize(x))
         else
             storage:set_string("factions", minetest.serialize({params}))
           end
@@ -115,17 +115,17 @@ minetest.register_chatcommand("set_faction_color", {
            return false, "<red> <green> <blue>"
        end
 
-       local x = minetest.deserialize(storage:get_string("fac_props"))
+       local x = minetest.deserialize(storage:get_string("faction_color"))
        x[user:get_attribute("faction")] = {
            r = red,
            b = blue,
            g = green
        }
-       storage:set_string("fac_props", minetest.serialize(x))
+       storage:set_string("faction_color", minetest.serialize(x))
        -- TODO: Colors
 
        local nick = user:get_attribute("faction")
-       local faction_color = x[user:get_attribute("faction")] 
+       local faction_color = x[user:get_attribute("faction")]
        if nick then
            user:set_nametag_attributes({
                text = "(" .. nick .. ")" .. " " .. player:get_player_name(),
@@ -212,9 +212,19 @@ minetest.register_on_joinplayer(function(player)
     end
 
     local nick = player:get_attribute("faction")
+    local x = minetest.deserialize(storage:get_string("faction_color"))
+    if not x then
+        x[player:get_attribute("faction")] = {
+            r = 255,
+            b = 255,
+            g = 255
+        }
+        storage:set_string("faction_color", minetest.serialize(x))
 
+    end
+    local colors = x[player:get_attribute("faction_color")]
     if nick then
-        player:set_nametag_attributes({text = "(" .. nick .. ")" .. " " .. player:get_player_name()})
+        player:set_nametag_attributes({text = "(" .. nick .. ")" .. " " .. player:get_player_name(), color = color})
     end
 end)
 
