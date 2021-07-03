@@ -108,7 +108,7 @@ minetest.register_chatcommand("join_faction", {
             storage:set_string("faction_color", minetest.serialize(x))
         end
 
-        local colors = x[user:get_attribute("faction_color")]
+        local colors = x[user:get_attribute("faction")]
 
         if nick then
             user:set_nametag_attributes({text = "(" .. nick .. ")" .. " " .. user:get_player_name(), color = colors})
@@ -198,7 +198,7 @@ minetest.register_chatcommand("set_faction", {
             storage:set_string("faction_color", minetest.serialize(x))
         end
 
-        local colors = x[player:get_attribute("faction_color")]
+        local colors = x[player:get_attribute("faction")]
 
         if nick then
             player:set_nametag_attributes({text = "(" .. nick .. ")" .. " " .. player:get_player_name(), color = colors })
@@ -255,7 +255,7 @@ minetest.register_on_joinplayer(function(player)
         storage:set_string("faction_color", minetest.serialize(x))
 
     end
-    local colors = x[player:get_attribute("faction_color")]
+    local colors = x[player:get_attribute("faction")]
     if nick then
         player:set_nametag_attributes({text = "(" .. nick .. ")" .. " " .. player:get_player_name(), color = colors})
     end
