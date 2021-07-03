@@ -262,16 +262,37 @@ minetest.register_on_joinplayer(function(player)
 end)
 
 minetest.register_node("factions:chest", {
-  description = "Factions Chest",
-  tiles = {
-    "factions_chest_top.png",
-    "factions_chest_bottom.png",
-    "factions_chest_right.png",
-    "factions_chest_left.png",
-    "factions_chest_back.png",
-    "factions_chest_front.png",
-  },
-  drop = "factions:chest",
-  groups = {choppy = 1},
-  paramtype2 = "facedir"
+    description = "Factions Chest",
+    tiles = {
+        "factions_chest_top.png",
+        "factions_chest_bottom.png",
+        "factions_chest_right.png",
+        "factions_chest_left.png",
+        "factions_chest_back.png",
+        "factions_chest_front.png",
+    },
+    sounds = default.node_sound_wood_defaults(),
+    groups = {choppy = 2, oddly_breakable_by_hand = 2, flammable = 2},
+    paramtype2 = "facedir"
+})
+
+minetest.register_craft({
+    output = "factions:chest",
+    recipe = {
+        {"group:tree", "group:tree", "group:tree"},
+        {"group:tree", "default:mese_crystal", "group:tree"},
+        {"group:tree", "group:tree", "group:tree"},
+    },
+})
+
+minetest.register_craft({
+    type = "shapeless",
+    output = "factions:chest",
+    recipe = {"default:chest", "default:mese_crystal"},
+})
+
+minetest.register_craft({
+    type = "fuel",
+    recipe = "factions:chest",
+    burntime = 30,
 })
