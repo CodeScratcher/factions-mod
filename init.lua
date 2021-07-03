@@ -164,8 +164,8 @@ minetest.register_chatcommand("set_faction", {
         local user = minetest.get_player_by_name(username)
 
         local i = 0
-        local to
-        local tab
+        local to = ""
+        local tab = {}
 
         for word in string.gmatch(param, "([^%s]+)") do
             if i == 0 then
