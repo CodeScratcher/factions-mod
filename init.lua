@@ -90,9 +90,18 @@ minetest.register_chatcommand("join_faction", {
         end
 
         local nick = user:get_attribute("faction")
+        if not x then
+            x[user:get_attribute("faction")] = {
+                r = 255,
+                b = 255,
+                g = 255
+            }
+            storage:set_string("faction_color", minetest.serialize(x))
 
+        end
+        local colors = x[user:get_attribute("faction_color")]
         if nick then
-            user:set_nametag_attributes({text = "(" .. nick .. ")" .. " " .. user:get_player_name()})
+            user:set_nametag_attributes({text = "(" .. nick .. ")" .. " " .. user:get_player_name(), color = colors})
         end
     end
 })
@@ -167,9 +176,19 @@ minetest.register_chatcommand("set_faction", {
        end
 
        local nick = player:get_attribute("faction")
+       local x = minetest.deserialize(storage:get_string("faction_color"))
+       if not x then
+           x[player:get_attribute("faction")] = {
+               r = 255,
+               b = 255,
+               g = 255
+           }
+           storage:set_string("faction_color", minetest.serialize(x))
 
+       end
+       local colors = x[player:get_attribute("faction_color")]
        if nick then
-           player:set_nametag_attributes({text = "(" .. nick .. ")" .. " " .. player:get_player_name() })
+           player:set_nametag_attributes({text = "(" .. nick .. ")" .. " " .. player:get_player_name(), color = colors })
        end
    end
 })
@@ -212,21 +231,19 @@ minetest.register_on_joinplayer(function(player)
     end
 
     local nick = player:get_attribute("faction")
-    local color = minetest.deserialize(storage:get_string("faction_color"))
-
-    if not color then
-        color[player:get_attribute("faction")] = {
+    local x = minetest.deserialize(storage:get_string("faction_color"))
+    if not x then
+        x[player:get_attribute("faction")] = {
             r = 255,
-            g = 255,
-            b = 255
+            b = 255,
+            g = 255
         }
-        storage:set_string("faction_color", minetest.serialize(color))
+        storage:set_string("faction_color", minetest.serialize(x))
+
     end
-
-    local colors = color[player:get_attribute("faction_color")]
-
+    local colors = x[player:get_attribute("faction_color")]
     if nick then
-        player:set_nametag_attributes({text = "(" .. nick .. ")" .. " " .. player:get_player_name(), color = color})
+        player:set_nametag_attributes({text = "(" .. nick .. ")" .. " " .. player:get_player_name(), color = colors})
     end
 end)
 
