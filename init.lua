@@ -212,17 +212,19 @@ minetest.register_on_joinplayer(function(player)
     end
 
     local nick = player:get_attribute("faction")
-    local x = minetest.deserialize(storage:get_string("faction_color"))
-    if not x then
-        x[player:get_attribute("faction")] = {
-            r = 255,
-            b = 255,
-            g = 255
-        }
-        storage:set_string("faction_color", minetest.serialize(x))
+    local color = minetest.deserialize(storage:get_string("faction_color"))
 
+    if not color then
+        color[player:get_attribute("faction")] = {
+            r = 255,
+            g = 255,
+            b = 255
+        }
+        storage:set_string("faction_color", minetest.serialize(color))
     end
-    local colors = x[player:get_attribute("faction_color")]
+
+    local colors = color[player:get_attribute("faction_color")]
+
     if nick then
         player:set_nametag_attributes({text = "(" .. nick .. ")" .. " " .. player:get_player_name(), color = color})
     end
