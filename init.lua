@@ -173,6 +173,8 @@ minetest.register_chatcommand("set_faction", {
             else
                 table.insert(tab, word)
             end
+
+            i = i + 1
         end
 
         local faction = table.concat(tab, " ")
