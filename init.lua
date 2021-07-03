@@ -157,19 +157,30 @@ minetest.register_chatcommand("set_faction_color", {
 })
 
 minetest.register_chatcommand("set_faction", {
-    params = "<player>, <faction name>",
+    params = "<player> <faction name>",
 
     description = "Set the faction of a player",
     func = function(username, param)
         local user = minetest.get_player_by_name(username)
-        local params = string.split(param, ", ")
-        local to = params[1]
-        local faction = params[2]
+
+        local i = 0
+        local to
+        local tab
+
+        for word in string.gmatch(param, "([^%s]+)") do
+            if i == 0 then
+                to = word
+            else
+                table.insert(tab, word)
+            end
+        end
+
+        local faction = table.concat(tab, " ")
 
         if to == nil or faction == nil then
             print(to)
             print(faction)
-            return false, "Usage: /set_faction <user>, <faction>"
+            return false, "Usage: /set_faction <user> <faction>"
         end
 
         local player = minetest.get_player_by_name(to)
