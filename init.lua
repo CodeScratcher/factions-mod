@@ -114,7 +114,7 @@ minetest.register_chatcommand("set_faction_color", {
    params = "<red> <green> <blue>",
    privs = {
      interact = true,
-     set_faction = true
+     faction_leader = true
    },
    description = "Set the color of a faction",
    func = function(username, param)
@@ -141,7 +141,7 @@ minetest.register_chatcommand("set_faction_color", {
        local faction_color = x[user:get_attribute("faction")]
        if nick then
            user:set_nametag_attributes({
-               text = "(" .. nick .. ")" .. " " .. player:get_player_name(),
+               text = "(" .. nick .. ")" .. " " .. user:get_player_name(),
                color = faction_color
            })
        end
@@ -150,10 +150,7 @@ minetest.register_chatcommand("set_faction_color", {
 
 minetest.register_chatcommand("set_faction", {
    params = "<player>, <faction name>",
-   privs = {
-     interact = true,
-     set_faction = true
-   },
+
    description = "Set the faction of a player",
    func = function(username, param)
        local user = minetest.get_player_by_name(username)
