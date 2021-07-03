@@ -265,4 +265,5 @@ minetest.register_node("factions:chest", {
   },
   drop = "factions:chest",
   groups = {choppy = 1},
+  paramtype2 = "facedir"
 })
