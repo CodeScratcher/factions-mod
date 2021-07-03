@@ -299,9 +299,12 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-    type = "shapeless",
     output = "factions:chest",
-    recipe = {"default:chest", "default:mese_crystal"},
+    recipe = {
+        {"",              "default:chest",        ""},
+        {"default:chest", "default:mese_crystal", "default:chest"},
+        {"",              "default:chest",        ""},
+    },
 })
 
 minetest.register_craft({
