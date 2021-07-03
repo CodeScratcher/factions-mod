@@ -56,6 +56,7 @@ minetest.register_chatcommand("invite_to_faction", {
                       local facs = minetest.deserialize(player:get_attribute("factions"))
 
                       facs[#facs+1] = user:get_attribute("faction")
+                      print_all_of(facs)
                       player:set_attribute("factions", minetest.serialize(facs))
                 else
                       player:set_attribute("factions", minetest.serialize({user:get_attribute("faction")}))
@@ -74,10 +75,10 @@ minetest.register_chatcommand("join_faction", {
     func = function(username, param)
           local user = minetest.get_player_by_name(username)
 
-        if has_value(minetest.deserialize(user:get_attribute("factions")), params) then
-              user:set_attribute("faction", minetest.serialize(faction))
+        if has_value(minetest.deserialize(user:get_attribute("factions")), param) then
+              user:set_attribute("faction", param)
         else
-            minetest.chat_send_player(user:get_player_name(), "You aren't allowed to join that faction.")
+            return false, "You aren't allowed to join that faction."
         end
 
         local nick = user:get_attribute("faction")
@@ -157,14 +158,14 @@ minetest.register_privilege("set_faction", {
 
 minetest.register_on_joinplayer(function(player)
     if not player:get_attribute("faction") then
-        player:set_attribute("faction", minetest.serialize(nil))
+        player:set_attribute("faction", "neutral")
     end
 
     if type(minetest.deserialize(player:get_attribute("faction"))) == "table" then
-       player:set_attribute("faction", nil)
+       player:set_attribute("faction", "neutral")
     end
 
-    local nick = minetest.deserialize(player:get_attribute("faction"))
+    local nick = player:get_attribute("faction")
 
     if nick then
         player:set_nametag_attributes({text = "(" .. nick .. ")" .. " " .. player:get_player_name()})
