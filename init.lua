@@ -115,6 +115,13 @@ minetest.register_chatcommand("set_faction_color", {
            return false, "<red> <green> <blue>"
        end
 
+       local x = minetest.deserialize(storage:get_string("fac_props"))
+       x[user:get_attribute("faction")] = {
+           r = red,
+           b = blue,
+           g = green
+       }
+       storage:set_string("fac_props", minetest.serialize(x))
        -- TODO: Colors
 
        local nick = user:get_attribute("faction")
