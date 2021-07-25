@@ -287,12 +287,10 @@ local chest = gen_def({
 	type = "chest",
 	size = "small",
 	tiles = {
-        "factions_chest_top.png",
-        "factions_chest_bottom.png",
-        "factions_chest_right.png",
-        "factions_chest_left.png",
-        "factions_chest_back.png",
-        "factions_chest_front.png",
+        top = "factions_chest_top.png",
+        side = "factions_chest_right.png",
+
+        front ="factions_chest_front.png"
     },
 	pipeworks_enabled = false,
 	allow_metadata_inventory_move = false,
