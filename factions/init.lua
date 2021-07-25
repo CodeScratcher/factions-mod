@@ -1,3 +1,6 @@
+local gen_def = dofile(minetest.get_modpath("more_chests") .. "/utils/base.lua")
+local actions = dofile(minetest.get_modpath("more_chests") .. "/utils/actions.lua")
+
 local function has_value (tab, val)
     for index, value in ipairs(tab) do
         if value == val then
@@ -274,9 +277,11 @@ minetest.register_on_joinplayer(function(player)
     end
 end)
 
-minetest.register_node("factions:chest", {
-    description = "Factions Chest",
-    tiles = {
+local chest = gen_def({
+	description = "Factions chest",
+	type = "chest",
+	size = "small",
+	tiles = {
         "factions_chest_top.png",
         "factions_chest_bottom.png",
         "factions_chest_right.png",
@@ -284,10 +289,31 @@ minetest.register_node("factions:chest", {
         "factions_chest_back.png",
         "factions_chest_front.png",
     },
-    sounds = default.node_sound_wood_defaults(),
-    groups = {choppy = 2, oddly_breakable_by_hand = 2, flammable = 2},
-    paramtype2 = "facedir"
+	pipeworks_enabled = true,
+	allow_metadata_inventory_move = false,
+	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
+		local meta = minetest.get_meta(pos)
+		if actions.has_locked_chest_privilege(meta, player) then
+			return stack:get_count()
+		end
+		local target = meta:get_inventory():get_list(listname)[index]
+		local target_name = target:get_name()
+		local stack_count = stack:get_count()
+		if target_name == stack:get_name()
+		and target:get_count() < stack_count then
+			return stack_count
+		end
+		if target_name ~= "" then
+			return 0
+		end
+		return stack_count
+	end,
+	allow_metadata_inventory_take = actions.get_allow_metadata_inventory_take({
+		"dropbox", check_privs = actions.has_locked_chest_privilege
+	}),
 })
+
+minetest.register_node("factions:chest", chest)
 
 minetest.register_craft({
     output = "factions:chest",
