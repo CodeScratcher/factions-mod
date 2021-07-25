@@ -37,7 +37,7 @@ function generate_chest_def(def)
 		after_place_node = function(pos, placer)
 			local meta = minetest.get_meta(pos)
 			meta:set_string("owner", placer:get_attribute("faction") or "")
-			meta:set_string("infotext", S("@1 (owned by @2)", def.description, meta:get_string("owner")))
+			meta:set_string("infotext", "@1 (owned by @2)", def.description, meta:get_string("owner"))
 		end,
 		on_construct = function(pos)
 			local meta = minetest.get_meta(pos)
