@@ -1,5 +1,5 @@
-local gen_def = dofile(minetest.get_modpath("more_chests") .. "/utils/base.lua")
-local actions = dofile(minetest.get_modpath("more_chests") .. "/utils/actions.lua")
+local gen_def = dofile(minetest.get_modpath("factions") .. "/utils/base.lua")
+local actions = dofile(minetest.get_modpath("factions") .. "/utils/actions.lua")
 
 local function has_value (tab, val)
     for index, value in ipairs(tab) do
@@ -276,7 +276,12 @@ minetest.register_on_joinplayer(function(player)
         player:set_nametag_attributes({text = "(" .. nick .. ")" .. " " .. player:get_player_name(), color = colors})
     end
 end)
-
+function has_locked_chest_privilege(meta, player)
+	if player:get_player_name() ~= meta:get_string("faction_owner") then
+		return false
+	end
+	return true
+end
 local chest = gen_def({
 	description = "Factions chest",
 	type = "chest",
@@ -289,7 +294,7 @@ local chest = gen_def({
         "factions_chest_back.png",
         "factions_chest_front.png",
     },
-	pipeworks_enabled = true,
+	pipeworks_enabled = false,
 	allow_metadata_inventory_move = false,
 	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
 		local meta = minetest.get_meta(pos)
