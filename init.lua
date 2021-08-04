@@ -1,6 +1,20 @@
 local gen_def = dofile(minetest.get_modpath("factions") .. "/utils/base.lua")
 local actions = dofile(minetest.get_modpath("factions") .. "/utils/actions.lua")
 factions = {}
+local storage = minetest.get_mod_storage()
+if minetest.deserialize(storage:get_string("player_factions")) then
+    factions.player_factions = minetest.deserialize(storage:get_string("player_factions"))
+else
+    factions.player_factions = {}
+    storage:set_string("player_factions", minetest.serialize({}))
+end
+function factions.get_player_faction(username)
+    return factions.player_factions[username]
+end
+function factions.set_player_faction(username, faction)
+   factions.player_factions[username] = faction
+   storage:set_string("player_factions", minetest.serialize(factions.player_factions))
+end
 local function has_value (tab, val)
     for index, value in ipairs(tab) do
         if value == val then
@@ -17,7 +31,6 @@ local function print_all_of (tab)
     end
 end
 
-storage = minetest.get_mod_storage()
 
 minetest.register_chatcommand("add_faction", {
     params = "<faction name>",
@@ -48,6 +61,16 @@ minetest.register_chatcommand("add_faction", {
               storage:set_string("faction_color", minetest.serialize(x))
         else
             storage:set_string("factions", minetest.serialize({params}))
+            local x = minetest.deserialize(storage:get_string("faction_color"))
+              if not x then
+                  x = {}
+              end
+              x[params] = {
+                  r = 255,
+                  b = 255,
+                  g = 255
+              }
+
           end
     end
 })
@@ -100,7 +123,7 @@ minetest.register_chatcommand("join_faction", {
         end
 
         local nick = user:get_attribute("faction")
-
+        factions.set_player_faction(username, nick)
         if not x then
             x = {}
             x[user:get_attribute("faction")] = {
@@ -201,6 +224,7 @@ minetest.register_chatcommand("set_faction", {
         end
 
         local nick = player:get_attribute("faction")
+	factions.set_player_faction(to, nick)
         local x = minetest.deserialize(storage:get_string("faction_color"))
 
         if not x then
@@ -275,6 +299,10 @@ minetest.register_on_joinplayer(function(player)
     end
 
     local nick = player:get_attribute("faction")
+    if not factions.player_factions[player:get_player_name()] then
+        factions.player_factions[player:get_player_name()] = nick
+        storage:set_string("player_factions", minetest.serialize(factions.player_factions))
+    end
     local x = minetest.deserialize(storage:get_string("faction_color"))
     if not x then
         x = {}
