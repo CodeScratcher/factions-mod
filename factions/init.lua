@@ -1,7 +1,6 @@
 local gen_def = dofile(minetest.get_modpath("factions") .. "/utils/base.lua")
 local actions = dofile(minetest.get_modpath("factions") .. "/utils/actions.lua")
-factions = {}
-factions.dummy_val = "test"
+
 local function has_value (tab, val)
     for index, value in ipairs(tab) do
         if value == val then
