@@ -37,7 +37,7 @@ function generate_chest_def(def)
 		after_place_node = function(pos, placer)
 			local meta = minetest.get_meta(pos)
 			meta:set_string("owner", placer:get_attribute("faction") or "")
-			meta:set_string("infotext", def.description .. " (owned by the " ..  meta:get_string("owner") .. " faction )")
+			meta:set_string("infotext", def.description .. " (owned by the " ..  meta:get_string("owner") .. " faction)")
 		end,
 		on_construct = function(pos)
 			local meta = minetest.get_meta(pos)
@@ -57,13 +57,15 @@ function generate_chest_def(def)
 			return inv:is_empty("main")
 		end,
 	}
-	-- register log actions, NOTE passing an anonymous function to avoid getting the default if not necessary
+
+	-- register log actions, NOTE passing an anonymous function to avoid getting the default is not necessary
 	out.allow_metadata_inventory_move = parse_action(def.allow_metadata_inventory_move, function() actions.get_allow_metadata_inventory_move{def.type} end)
 	out.allow_metadata_inventory_put = parse_action(def.allow_metadata_inventory_put, function() actions.get_allow_metadata_inventory_put{def.type} end)
 	out.allow_metadata_inventory_take = parse_action(def.allow_metadata_inventory_take, function() actions.get_allow_metadata_inventory_take{def.type} end)
 	out.on_metadata_inventory_move = parse_action(def.on_metadata_inventory_move, function() actions.get_on_metadata_inventory_move(def.type) end)
 	out.on_metadata_inventory_put = parse_action(def.on_metadata_inventory_put, function() actions.get_on_metadata_inventory_put(def.type) end)
 	out.on_metadata_inventory_take = parse_action(def.on_metadata_inventory_take, function() actions.get_on_metadata_inventory_take(def.type) end)
+
 	-- if model is not a simple block handle node_box attribute
 	if def.node_box then
 		out.drawtype = "nodebox"
@@ -72,6 +74,7 @@ function generate_chest_def(def)
 			fixed = def.node_box,
 		}
 	end
+
 	-- add pipeworks compatibility, TODO needs proper testing
 	if def.pipeworks_enabled == true then
 		out.groups.tubedevice = 1
