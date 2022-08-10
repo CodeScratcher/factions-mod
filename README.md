@@ -8,3 +8,4 @@ Then, create a faction with the `/add_faction` commmand and use the `/set_factio
 ## Caveats
 - Displaying factions in usernames can clash with other mods that mess with the username displaying UI
 - Displaying factions in chat can clash with chat altering mods
+- In order to use faction protection, you must change the optional dependencies of the `protector` mod. 
