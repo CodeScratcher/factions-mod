@@ -481,3 +481,12 @@ minetest.register_on_punchnode(function(pos, node, puncher)
 		    minetest.check_for_falling(pos)
 	  end
 end)
+
+minetest.register_on_chat_message(function(name, message)
+    if (minetest.get_player_by_name(name)) then
+        minetest.chat_send_all("[" .. minetest.get_player_by_name(name):get_attribute("faction") .. "]  <".. name .. "> " ..message)
+        return true
+    else
+        return false
+    end
+end)
