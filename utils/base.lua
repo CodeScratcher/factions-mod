@@ -1,8 +1,8 @@
 
 -- NOTE: `require` is not allowed with mod security on
 -- `dofile` with a return on the module is used instead
-generate_formspec_string = dofile(minetest.get_modpath("factions").."/utils/formspec.lua")
-local actions = dofile(minetest.get_modpath("factions").."/utils/actions.lua")
+generate_formspec_string = dofile(minetest.get_modpath("coop_factions").."/utils/formspec.lua")
+local actions = dofile(minetest.get_modpath("coop_factions").."/utils/actions.lua")
 
 local function parse_action(value, default_getter)
 	if value == false then -- model disabled this attribute

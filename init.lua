@@ -13,8 +13,8 @@
 ---- Misc init stuff ----
 -------------------------
 
-local gen_def = dofile(minetest.get_modpath("factions") .. "/utils/base.lua")
-local actions = dofile(minetest.get_modpath("factions") .. "/utils/actions.lua")
+local gen_def = dofile(minetest.get_modpath("coop_factions") .. "/utils/base.lua")
+local actions = dofile(minetest.get_modpath("coop_factions") .. "/utils/actions.lua")
 
 factions = {}
 
@@ -97,6 +97,7 @@ minetest.register_chatcommand("add_faction", {
                 b = 255,
                 g = 255
             }
+            storage:set_string("faction_color", minetest.serialize(x))
         end
     end
 })
@@ -416,10 +417,10 @@ local chest = gen_def({
 ---------------------------
 
 -- Factions Chest
-minetest.register_node("factions:chest", chest)
+minetest.register_node("coop_factions:chest", chest)
 
 minetest.register_craft({ -- Like the normal craft but logs instead of planks
-    output = "factions:chest", -- And there's a mese crystal in the middle
+    output = "coop_factions:chest", -- And there's a mese crystal in the middle
     recipe = {
         {"group:tree", "group:tree",           "group:tree"},
         {"group:tree", "default:mese_crystal", "group:tree"},
@@ -428,7 +429,7 @@ minetest.register_craft({ -- Like the normal craft but logs instead of planks
 })
 
 minetest.register_craft({ -- Or you can combine 4 normal chests
-    output = "factions:chest", -- around a mese crystal
+    output = "coop_factions:chest", -- around a mese crystal
     recipe = {
         {"",              "default:chest",        ""},
         {"default:chest", "default:mese_crystal", "default:chest"},
@@ -463,7 +464,7 @@ local chest_remover_toolcaps = { -- Everything takes 0 seconds to mine
     damage_groups = {fleshy = 1000}, -- 1000 damage - also a very powerful weapon
 }
 
-minetest.register_tool("factions:chest_remover", {
+minetest.register_tool("coop_factions:chest_remover", {
 	  description = "Chest Remover (breaks non-empty chests)",
 	  range = 100,
 	  inventory_image = "factions_chest_remover.png",
@@ -472,7 +473,7 @@ minetest.register_tool("factions:chest_remover", {
 })
 
 minetest.register_on_punchnode(function(pos, node, puncher)
-	  if puncher:get_wielded_item():get_name() == "factions:chest_remover"
+	  if puncher:get_wielded_item():get_name() == "coop_factions:chest_remover"
 	  and minetest.get_node(pos).name ~= "air" then
 		    -- The node is removed directly, which means it even works
 		    -- on non-empty containers and group-less nodes
