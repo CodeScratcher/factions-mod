@@ -192,21 +192,21 @@ minetest.register_chatcommand("set_faction_color", {
         local x = minetest.deserialize(storage:get_string("faction_color"))
 
         x[user:get_attribute("faction")] = {
-            r = red,
-            g = green,
-            b = blue,
+            r = tonumber(red),
+            g = tonumber(green),
+            b = tonumber(blue),
         }
 
         storage:set_string("faction_color", minetest.serialize(x))
-        -- TODO: Colors
-
-        local nick = user:get_attribute("faction")
-        local faction_color = x[user:get_attribute("faction")]
-        if nick then
-            user:set_nametag_attributes({
-                text = "(" .. nick .. ")" .. " " .. user:get_player_name(),
-                color = faction_color
-            })
+        for _, player in ipairs(minetest.get_connected_players()) do
+            local nick = player:get_attribute("faction")
+            local faction_color = x[player:get_attribute("faction")]
+            if nick then
+                player:set_nametag_attributes({
+                    text = "(" .. nick .. ")" .. " " .. player:get_player_name(),
+                    color = faction_color
+                })
+            end
         end
     end
 })
@@ -481,10 +481,47 @@ minetest.register_on_punchnode(function(pos, node, puncher)
 		    minetest.check_for_falling(pos)
 	  end
 end)
+local function rgb_to_hex(rgb)
+    local hexadecimal = '#'
+    for key, fval in ipairs({'r', 'g', 'b'}) do
+        local value = tonumber(rgb[fval])
+        local hex = ''
+        while(value > 0) do
+            local index = math.fmod(value, 16) + 1
+            value = math.floor(value / 16)
+            hex = string.sub('0123456789ABCDEF', index, index) .. hex            
+        end
+
+        if(string.len(hex) == 0)then
+            hex = '00'
+
+        elseif(string.len(hex) == 1)then
+            hex = '0' .. hex
+        end
+
+        hexadecimal = hexadecimal .. hex
+    end
+    return hexadecimal
+end
 
 minetest.register_on_chat_message(function(name, message)
     if (minetest.get_player_by_name(name)) then
-        minetest.chat_send_all("[" .. minetest.get_player_by_name(name):get_attribute("faction") .. "]  <".. name .. "> " ..message)
+        local x = minetest.deserialize(storage:get_string("faction_color"))
+        local player = minetest.get_player_by_name(name)
+        if not x then
+            x = {}
+
+            x[player:get_attribute("faction")] = {
+                r = 255,
+                b = 255,
+                g = 255
+            }
+
+            storage:set_string("faction_color", minetest.serialize(x))
+        end
+
+        local colors = x[player:get_attribute("faction")]
+        minetest.chat_send_all(minetest.get_color_escape_sequence(rgb_to_hex(colors)) .. " [" .. minetest.get_player_by_name(name):get_attribute("faction") .. "]  <".. name .. "> " ..message)
         return true
     else
         return false
