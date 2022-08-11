@@ -1,5 +1,5 @@
 # Factions Mod for Minetest
-A mod that allows players to team together
+A mod that allows players to team together, mostly for the purposes of cooperation
 
 ## Usage:
 Grant yourself the faction_add and set_faction privilege
