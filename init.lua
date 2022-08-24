@@ -430,7 +430,7 @@ minetest.register_on_joinplayer(function(player)
 
         storage:set_string("faction_color", minetest.serialize(x))
     end
-    if minetest.settings.allow_starting_faction then
+    if minetest.settings:get_bool("allow_starting_faction") then
         local colors = x[player:get_attribute("faction")]
         local privs = minetest.get_player_privs(player:get_player_name())
         privs.start_faction = true
@@ -586,7 +586,7 @@ local function rgb_to_hex(rgb)
 end
 
 minetest.register_on_chat_message(function(name, message)
-    if (minetest.settings.no_chat_intercept) then
+    if (minetest.settings.get_bool("no_chat_intercept")) then
         return false
     end
     if (minetest.get_player_by_name(name)) then

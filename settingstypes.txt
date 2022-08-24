@@ -1,2 +1,2 @@
-allow_starting_faction bool true
-no_chat_intercept bool false
+allow_starting_faction (Allows starting a faction without the privilege) bool true
+no_chat_intercept (Prevents this mod from interfering with other chat interception mods) bool false
