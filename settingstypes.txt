@@ -1,0 +1,2 @@
+allow_starting_faction bool true
+no_chat_intercept bool false
