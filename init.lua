@@ -586,7 +586,7 @@ local function rgb_to_hex(rgb)
 end
 
 minetest.register_on_chat_message(function(name, message)
-    if (minetest.settings.get_bool("no_chat_intercept")) then
+    if (minetest.settings:get_bool("no_chat_intercept")) then
         return false
     end
     if (minetest.get_player_by_name(name)) then
